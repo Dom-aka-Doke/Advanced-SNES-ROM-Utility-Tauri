@@ -1,0 +1,596 @@
+/* Look & feel inspired by the original Windows Forms application */
+
+:root {
+  --bg: #f0f0f0;
+  --text: #000;
+  --text-disabled: #a0a0a0;
+  --border: #adadad;
+  --border-light: #dcdcdc;
+  --button: #e1e1e1;
+  --button-hover: #e5f1fb;
+  --button-hover-border: #0078d7;
+  --button-pressed: #cce4f7;
+  --button-pressed-border: #005499;
+  --input-border: #7a7a7a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 542px;
+  height: 571px;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font: 11px "Segoe UI", Tahoma, "Helvetica Neue", Arial, sans-serif;
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+
+body.busy,
+body.busy * {
+  cursor: wait !important;
+}
+
+#form {
+  position: relative;
+  width: 542px;
+  height: 571px;
+}
+
+.ctl {
+  position: absolute;
+  margin: 0;
+  white-space: nowrap;
+}
+
+label.ctl,
+span.ctl {
+  line-height: 13px;
+  height: 15px;
+}
+
+.value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Group boxes */
+.group {
+  border: none;
+}
+
+.group::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 7px;
+  bottom: 0;
+  border: 1px solid var(--border-light);
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+.group > .caption {
+  position: absolute;
+  left: 6px;
+  top: 0;
+  padding: 0 3px;
+  background: var(--bg);
+  font-size: 12px;
+  line-height: 14px;
+  z-index: 1;
+}
+
+/* Buttons */
+button {
+  font: inherit;
+  color: var(--text);
+  background: var(--button);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 0 4px;
+  outline: none;
+}
+
+button:hover:not(:disabled) {
+  background: var(--button-hover);
+  border-color: var(--button-hover-border);
+}
+
+button:active:not(:disabled) {
+  background: var(--button-pressed);
+  border-color: var(--button-pressed-border);
+}
+
+button:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: -4px;
+}
+
+button:disabled {
+  color: var(--text-disabled);
+  background: #cccccc;
+  border-color: #bfbfbf;
+}
+
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px 0 4px;
+}
+
+.icon-btn img {
+  width: 16px;
+  height: 16px;
+  image-rendering: auto;
+}
+
+.icon-btn:disabled img {
+  opacity: 0.45;
+  filter: grayscale(1);
+}
+
+.icon-btn.patch {
+  justify-content: flex-start;
+}
+
+.icon-btn.patch img {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-btn.patch span {
+  flex: 1;
+  text-align: center;
+  padding-right: 24px;
+}
+
+.vertical {
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+  padding: 0;
+  letter-spacing: -1px;
+  line-height: 15px;
+}
+
+/* Inputs */
+input[type="text"],
+input:not([type]),
+select {
+  font: inherit;
+  color: var(--text);
+  background: #fff;
+  border: 1px solid var(--input-border);
+  border-radius: 0;
+  padding: 0 3px;
+  outline: none;
+}
+
+input:not([type]):focus,
+select:focus {
+  border-color: var(--button-hover-border);
+}
+
+input:not([type]):disabled,
+select:disabled {
+  color: var(--text-disabled);
+  background: var(--bg);
+  border-color: #cccccc;
+}
+
+input.center {
+  text-align: center;
+}
+
+#txtROMName:disabled {
+  color: #6d6d6d;
+}
+
+#txtCode {
+  text-transform: uppercase;
+}
+
+select {
+  padding: 0 1px;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 17px;
+  line-height: 17px;
+}
+
+.check input {
+  margin: 0;
+}
+
+.check:has(input:disabled) {
+  color: var(--text-disabled);
+}
+
+/* Checksums */
+.copy.enabled {
+  cursor: pointer;
+}
+
+.copy.enabled:hover {
+  text-decoration: underline dotted;
+}
+
+.hash {
+  max-width: 272px;
+  font-size: 11px;
+}
+
+#lblSHA256 {
+  font-size: 10px;
+  letter-spacing: -0.15px;
+}
+
+/* Tooltip */
+#tooltip {
+  position: fixed;
+  z-index: 100;
+  padding: 3px 6px;
+  background: #fff;
+  border: 1px solid #767676;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
+  font-size: 12px;
+  pointer-events: none;
+}
+
+/* Drag & drop */
+#dropOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 120, 215, 0.15);
+  border: 3px dashed #0078d7;
+  font-size: 18px;
+  color: #004e8c;
+  pointer-events: none;
+}
+
+#dropOverlay[hidden],
+#tooltip[hidden] {
+  display: none;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* =====================================================================
+   Modern design (View -> Modern design)
+   Colours taken from the SNES hardware: console grey shell, darker grey
+   panels, US-model lavender buttons; status lights use the face button
+   colours (green = OK, red = mismatch).
+   ===================================================================== */
+
+/* Round status light right of a group caption */
+.led {
+  display: inline-block;
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-left: 6px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.led[hidden] {
+  display: none;
+}
+
+.group > .caption:has(.led) {
+  display: inline-flex;
+  align-items: center;
+}
+
+body:not(.modern) .led {
+  display: none;
+}
+
+body.modern {
+  --m-shell: #d7d6dc;
+  --m-panel: #eeedf2;
+  --m-panel-edge: #c4c3cc;
+  --m-ink: #2e2b3a;
+  --m-ink-soft: #5d5a6e;
+  --m-ink-faint: #a5a3b0;
+  --m-key: #f7f6fa;
+  --m-key-low: #e4e3ea;
+  --m-key-edge: #b4b2bf;
+  --m-lavender: #5b4fa0;
+  --m-lavender-deep: #463c85;
+  --m-slot: #34304a;
+  --m-green: #2e9e5b;
+  --m-red: #d2343e;
+
+  background: var(--m-shell);
+  color: var(--m-ink);
+  font-family: Bahnschrift, "DIN Alternate", "DIN 2014", "Barlow", "Roboto Condensed", "Arial Narrow", "Segoe UI", system-ui, sans-serif;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+body.modern #form {
+  background: var(--m-shell);
+}
+
+/* Panels instead of group boxes */
+body.modern .group::before {
+  top: 0;
+  border: 1px solid var(--m-panel-edge);
+  border-radius: 10px;
+  background: var(--m-panel);
+  box-shadow: inset 0 1px 0 #fbfbfd;
+}
+
+body.modern .group > .caption {
+  top: 4px;
+  left: 8px;
+  padding: 0;
+  background: none;
+  font-weight: 600;
+  font-size: 11.5px;
+  color: var(--m-ink-soft);
+}
+
+body.modern label.ctl {
+  color: var(--m-ink-soft);
+}
+
+body.modern .value {
+  color: var(--m-ink);
+  font-weight: 600;
+}
+
+body.modern .hash {
+  font-weight: 500;
+}
+
+/* Keys */
+body.modern button {
+  color: var(--m-ink);
+  background: linear-gradient(var(--m-key), var(--m-key-low));
+  border: 1px solid var(--m-key-edge);
+  border-radius: 7px;
+  box-shadow: 0 1px 0 var(--m-key-edge);
+  font-family: inherit;
+  font-weight: 500;
+  transition: background-color 80ms, border-color 80ms;
+}
+
+body.modern button:hover:not(:disabled) {
+  background: linear-gradient(#ffffff, var(--m-key));
+  border-color: var(--m-lavender);
+}
+
+body.modern button:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: none;
+  background: var(--m-key-low);
+}
+
+body.modern button:focus-visible {
+  outline: 2px solid var(--m-lavender);
+  outline-offset: 1px;
+}
+
+body.modern button:disabled {
+  color: var(--m-ink-faint);
+  background: var(--m-key-low);
+  border-color: #cfcdd6;
+  box-shadow: none;
+}
+
+/* Primary actions: open, save, patch */
+body.modern #btnSelectROM:not(:disabled),
+body.modern #btnSave:not(:disabled),
+body.modern #btnPatch:not(:disabled) {
+  color: #fff;
+  background: linear-gradient(#6a5eb2, var(--m-lavender));
+  border-color: var(--m-lavender-deep);
+  box-shadow: 0 1px 0 var(--m-lavender-deep);
+}
+
+body.modern #btnSelectROM:hover:not(:disabled),
+body.modern #btnSave:hover:not(:disabled),
+body.modern #btnPatch:hover:not(:disabled) {
+  background: linear-gradient(#776bbf, #6457ad);
+  border-color: var(--m-lavender-deep);
+}
+
+body.modern #btnSave:not(:disabled) img,
+body.modern #btnPatch:not(:disabled) img {
+  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.8));
+}
+
+body.modern .vertical {
+  border-radius: 7px;
+}
+
+/* Inputs */
+body.modern input:not([type]),
+body.modern select {
+  color: var(--m-ink);
+  background: #fff;
+  border: 1px solid var(--m-key-edge);
+  border-radius: 6px;
+  font-family: inherit;
+}
+
+body.modern input:not([type]):focus,
+body.modern select:focus {
+  border-color: var(--m-lavender);
+  box-shadow: 0 0 0 2px rgba(91, 79, 160, 0.25);
+}
+
+body.modern input:not([type]):disabled,
+body.modern select:disabled {
+  color: var(--m-ink-faint);
+  background: var(--m-key-low);
+  border-color: #cfcdd6;
+}
+
+body.modern input[type="checkbox"] {
+  accent-color: var(--m-lavender);
+}
+
+body.modern .check:has(input:disabled) {
+  color: var(--m-ink-faint);
+}
+
+/* ROM path as cartridge slot */
+body.modern #txtROMName,
+body.modern #txtROMName:disabled {
+  color: #e9e7f2;
+  background: var(--m-slot);
+  border: none;
+  border-radius: 7px;
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.45);
+  letter-spacing: 0.2px;
+}
+
+/* Status light next to the internal checksum */
+body.modern .led.ok {
+  background: var(--m-green);
+  box-shadow: 0 0 0 2px rgba(46, 158, 91, 0.22);
+}
+
+body.modern .led.bad {
+  background: var(--m-red);
+  box-shadow: 0 0 0 2px rgba(210, 52, 62, 0.22);
+}
+
+body.modern .copy.enabled:hover {
+  color: var(--m-lavender);
+  text-decoration: none;
+}
+
+body.modern #tooltip {
+  border-radius: 6px;
+  border-color: var(--m-key-edge);
+  background: var(--m-panel);
+  color: var(--m-ink);
+}
+
+body.modern #dropOverlay {
+  background: rgba(91, 79, 160, 0.16);
+  border-color: var(--m-lavender);
+  border-radius: 12px;
+  color: var(--m-lavender-deep);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.modern button {
+    transition: none;
+  }
+
+  body.modern button:active:not(:disabled) {
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Message boxes inside the window (web/js/modal.js)                    */
+/* ------------------------------------------------------------------ */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.25);
+  cursor: default;
+}
+
+body.busy .modal-overlay,
+body.busy .modal-overlay * {
+  cursor: default !important;
+}
+
+.modal-box {
+  min-width: 260px;
+  max-width: 460px;
+  max-height: 520px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  border: 1px solid #7a7a7a;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+}
+
+.modal-title {
+  padding: 6px 10px;
+  background: #fff;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.modal-text {
+  padding: 16px 14px 12px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  overflow-y: auto;
+  background: #fff;
+  line-height: 1.35;
+}
+
+.modal-check {
+  padding: 8px 14px 0;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 10px 12px;
+}
+
+.modal-buttons button {
+  position: static;
+  min-width: 75px;
+  height: 23px;
+  padding: 0 10px;
+}
+
+body.modern .modal-overlay {
+  background: rgba(46, 43, 58, 0.35);
+}
+
+body.modern .modal-box {
+  background: var(--m-panel);
+  border: 1px solid var(--m-panel-edge);
+  border-radius: 10px;
+  overflow: hidden;
+  color: var(--m-ink);
+}
+
+body.modern .modal-title {
+  background: var(--m-shell);
+  border-bottom-color: var(--m-panel-edge);
+  font-weight: 600;
+}
+
+body.modern .modal-text {
+  background: transparent;
+}

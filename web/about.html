@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'">
+  <title>About</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dialog.css">
+</head>
+<body class="about">
+  <img class="ctl about-logo" src="img/logo.png" alt="" style="left:12px;top:20px;width:56px;height:56px">
+
+  <div class="group ctl" style="left:74px;top:12px;width:365px;height:179px">
+    <span class="caption">Disclaimer</span>
+    <div class="ctl multiline" style="left:13px;top:24px">This program is not endorsed or supported by Nintendo
+and the author is not affiliated with any other corporate
+entity.
+This program is free software (GPL-3.0), provided „AS IS“
+without warranty of any kind. The author cannot be held
+liable for damages of any kind arising from its use.
+
+<span id="appname">Advanced SNES ROM Utility JS</span> – Version <span id="version">2.0</span>
+Public Build --- Nov 20 2026
+©2021 - 2026 Dom aka Doke
+<a href="https://github.com/Dom-aka-Doke" class="link">https://github.com/Dom-aka-Doke</a></div>
+  </div>
+
+  <div class="group ctl" style="left:12px;top:208px;width:427px;height:101px">
+    <span class="caption">Credits / Special Thanks</span>
+    <div class="ctl multiline" style="left:15px;top:26px">- Ice Man for testing, reporting bugs and providing ideas
+- RedScorpion for running the most awesome community on earth
+- All the other people who helped improving this software and like to use it</div>
+    <div class="ctl multiline" style="left:15px;top:66px">Community: <a href="https://snes-projects.de" class="link">snes-projects.de</a>
+Logo design by chrisbanks2: <a href="http://www.iconarchive.com/artist/chrisbanks2.html" class="link">iconarchive.com/artist/chrisbanks2</a></div>
+  </div>
+
+  <button id="btnClose" class="ctl" style="left:12px;top:315px;width:427px;height:23px">Close</button>
+
+  <script src="js/platform.js"></script>
+  <script src="js/bridge-child.js"></script>
+  <script src="dialog.js"></script>
+</body>
+</html>

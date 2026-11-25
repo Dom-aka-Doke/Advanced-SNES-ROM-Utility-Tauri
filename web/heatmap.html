@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'">
+  <title>ROM Heatmap</title>
+  <link rel="stylesheet" href="heatmap.css">
+</head>
+<body>
+  <div class="viz-root">
+    <header>
+      <div class="title">
+        <h1 id="romName">ROM Heatmap</h1>
+        <div id="romInfo" class="muted"></div>
+      </div>
+      <div class="controls">
+        <label>Bank size
+          <select id="bankSize">
+            <option value="auto">Auto</option>
+            <option value="32768">32 kByte (LoROM)</option>
+            <option value="65536">64 kByte (HiROM)</option>
+          </select>
+        </label>
+        <div class="segmented" role="group" aria-label="View">
+          <button id="modeDup" class="active" type="button">Duplicates</button>
+          <button id="modeEntropy" type="button">Entropy</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="tiles">
+      <div class="tile"><span class="tile-value" id="tBanks">–</span><span class="tile-label">Banks</span></div>
+      <div class="tile"><span class="tile-value" id="tUnique">–</span><span class="tile-label">Unique (no copy)</span></div>
+      <div class="tile"><span class="tile-value" id="tDup">–</span><span class="tile-label" id="tDupSub">In duplicate groups</span></div>
+      <div class="tile"><span class="tile-value" id="tEmpty">–</span><span class="tile-label">Empty (00/FF)</span></div>
+      <div class="tile wide"><span class="tile-value small" id="tOverdump">–</span><span class="tile-label">Overdump</span></div>
+    </section>
+
+    <div id="legend" class="legend"></div>
+
+    <main>
+      <div id="grid" class="grid" role="grid" aria-label="ROM banks"></div>
+    </main>
+
+    <section class="groups">
+      <h2>Identical banks</h2>
+      <div id="groups" class="muted">–</div>
+    </section>
+
+    <footer>
+      <button id="btnClose" type="button">Close</button>
+    </footer>
+  </div>
+
+  <div id="tip" class="tip" hidden></div>
+
+  <script src="js/platform.js"></script>
+  <script src="js/bridge-child.js"></script>
+  <script src="heatmap.js"></script>
+</body>
+</html>

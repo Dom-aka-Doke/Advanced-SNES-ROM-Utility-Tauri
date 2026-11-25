@@ -1,0 +1,21 @@
+{
+  "name": "advanced-snes-rom-utility-tauri",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Advanced SNES ROM Utility JS - lightweight Tauri version for Windows, macOS and Linux",
+  "license": "GPL-3.0-or-later",
+  "author": "Dom aka Doke",
+  "scripts": {
+    "bundle": "node scripts/bundle-core.js",
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "build:win": "tauri build --bundles nsis",
+    "build:linux": "tauri build --bundles deb,appimage",
+    "build:mac": "tauri build --bundles app,dmg",
+    "test": "node test/run-tests.js && node test/shims-test.js",
+    "cli": "node cli.js"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.0.0"
+  }
+}

@@ -1,0 +1,292 @@
+/* ROM Heatmap – colors follow the validated reference palette (dataviz) */
+
+.viz-root {
+  color-scheme: light;
+  --surface-0: #f0f0f0;
+  --surface-1: #fcfcfb;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #77766f;
+  --grid-line: #dcdcdc;
+
+  /* Duplicates view: categorical slots 1-3 of the reference palette (validated all-pairs) */
+  --cat-unique: #2a78d6;      /* blue */
+  --cat-duplicate: #eb6834;   /* orange */
+  --cat-empty: #1baf7a;       /* aqua (bank numbers are shown as labels -> contrast relief) */
+  --header-ring: #0b0b0b;
+  --highlight-ring: #0b0b0b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--surface-0);
+  color: var(--text-primary);
+  font: 12px "Segoe UI", Tahoma, "Helvetica Neue", Arial, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.viz-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 10px 12px;
+  gap: 8px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 420px;
+}
+
+h2 {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.muted {
+  color: var(--text-secondary);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+select,
+button {
+  font: inherit;
+}
+
+select {
+  margin-left: 4px;
+  height: 22px;
+}
+
+.segmented {
+  display: inline-flex;
+  border: 1px solid #adadad;
+}
+
+.segmented button,
+footer button {
+  border: none;
+  background: #e1e1e1;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+
+.segmented button + button {
+  border-left: 1px solid #adadad;
+}
+
+.segmented button.active {
+  background: #cce4f7;
+  font-weight: 600;
+}
+
+/* Stat tiles */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) 2fr;
+  gap: 8px;
+}
+
+.tile {
+  background: var(--surface-1);
+  border: 1px solid var(--grid-line);
+  border-radius: 4px;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tile-value {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.tile-value.small {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 22px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tile-label {
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  color: var(--text-secondary);
+}
+
+.legend .item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend .swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.legend .ring {
+  background: var(--surface-1);
+  box-shadow: inset 0 0 0 2px var(--header-ring);
+}
+
+.legend .ramp {
+  width: 120px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+/* Grid */
+main {
+  flex: 1;
+  overflow: auto;
+  background: var(--surface-1);
+  border: 1px solid var(--grid-line);
+  border-radius: 4px;
+  padding: 8px;
+  min-height: 120px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 70px repeat(16, minmax(30px, 1fr));
+  gap: 2px;
+  align-items: stretch;
+}
+
+.row-label {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-family: Consolas, Menlo, monospace;
+  display: flex;
+  align-items: center;
+}
+
+.cell {
+  height: 26px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-family: Consolas, Menlo, monospace;
+  color: var(--text-primary);
+  cursor: default;
+  position: relative;
+}
+
+.cell.light-text {
+  color: #fcfcfb;
+}
+
+.cell.header {
+  box-shadow: inset 0 0 0 2px var(--surface-1), inset 0 0 0 4px var(--header-ring);
+}
+
+.cell.highlight {
+  outline: 2px solid var(--highlight-ring);
+  outline-offset: 1px;
+  z-index: 1;
+}
+
+.cell.partial {
+  opacity: 0.6;
+}
+
+/* Group list (table view of the duplicates) */
+.groups {
+  max-height: 110px;
+  overflow: auto;
+  background: var(--surface-1);
+  border: 1px solid var(--grid-line);
+  border-radius: 4px;
+  padding: 6px 8px;
+}
+
+.groups ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.groups li {
+  cursor: pointer;
+  font-family: Consolas, Menlo, monospace;
+  font-size: 11px;
+}
+
+.groups li:hover {
+  text-decoration: underline;
+}
+
+footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+footer button {
+  border: 1px solid #adadad;
+  min-width: 90px;
+}
+
+/* Tooltip */
+.tip {
+  position: fixed;
+  z-index: 10;
+  pointer-events: none;
+  background: var(--surface-1);
+  border: 1px solid #767676;
+  border-radius: 4px;
+  box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.2);
+  padding: 6px 8px;
+  font-size: 11px;
+  line-height: 15px;
+  max-width: 280px;
+}
+
+.tip b {
+  font-weight: 600;
+}
+
+.tip .k {
+  color: var(--text-secondary);
+}
+
+[hidden] {
+  display: none !important;
+}

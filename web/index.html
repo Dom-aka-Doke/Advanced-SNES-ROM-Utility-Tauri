@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'">
+  <title>Advanced SNES ROM Utility JS</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="form">
+    <!-- ROM selection -->
+    <button id="btnSelectROM" class="ctl" style="left:12px;top:3px;width:430px;height:23px">Select ROM File</button>
+    <input id="txtROMName" class="ctl center" style="left:12px;top:33px;width:431px;height:20px" value="Select a ROM File!" disabled>
+    <button id="btnSave" class="ctl icon-btn" style="left:452px;top:3px;width:80px;height:23px" disabled><img src="img/save.png" alt=""><span>Save</span></button>
+    <button id="btnSaveAs" class="ctl icon-btn" style="left:452px;top:30px;width:80px;height:23px" disabled><img src="img/save-as.png" alt=""><span>Save As</span></button>
+
+    <!-- GENERAL INFORMATION -->
+    <div class="group ctl" style="left:12px;top:59px;width:250px;height:127px">
+      <span class="caption" data-modern="General information">GENERAL INFORMATION</span>
+      <label class="ctl" style="left:6px;top:27px" for="txtTitle">Title</label>
+      <input id="txtTitle" class="ctl" style="left:72px;top:24px;width:167px;height:20px" disabled spellcheck="false">
+      <label class="ctl" style="left:6px;top:49px">Company</label>
+      <select id="cmbCompany" class="ctl" style="left:72px;top:46px;width:167px;height:21px" disabled></select>
+      <label class="ctl" style="left:6px;top:72px" for="cmbCountry">Country</label>
+      <select id="cmbCountry" class="ctl" style="left:72px;top:69px;width:167px;height:21px" disabled></select>
+      <label class="ctl" style="left:6px;top:99px" for="txtVersion">Version</label>
+      <input id="txtVersion" class="ctl" style="left:72px;top:96px;width:45px;height:20px" disabled spellcheck="false">
+      <label class="ctl" style="left:125px;top:99px" for="txtCode">Game Code</label>
+      <input id="txtCode" class="ctl" style="left:194px;top:96px;width:45px;height:20px" maxlength="4" disabled spellcheck="false">
+    </div>
+
+    <!-- Header / checksum buttons -->
+    <button id="btnAddHeader" class="ctl" style="left:268px;top:64px;width:127px;height:23px" disabled>Add Header</button>
+    <button id="btnRemoveHeader" class="ctl" style="left:405px;top:64px;width:127px;height:23px" disabled>Remove Header</button>
+    <button id="btnFixChecksum" class="ctl" style="left:268px;top:93px;width:127px;height:23px" disabled>Fix Checksum</button>
+    <button id="btnFixROMSize" class="ctl" style="left:405px;top:93px;width:127px;height:23px" disabled>Fix Internal ROM Size</button>
+
+    <!-- Expand / split -->
+    <button id="btnExpand" class="ctl" style="left:268px;top:134px;width:92px;height:23px" disabled>Expand ROM</button>
+    <select id="cmbExpand" class="ctl" style="left:366px;top:134px;width:168px;height:21px" disabled></select>
+    <label class="ctl" style="left:270px;top:166px" for="cmbExpandFill">Expand fill</label>
+    <select id="cmbExpandFill" class="ctl" style="left:366px;top:163px;width:168px;height:21px" disabled
+      title="How new space is filled when expanding: empty for ROM hacks, mirrored to write a game onto a bigger EPROM">
+      <option value="00">Empty (0x00)</option>
+      <option value="FF">Empty (0xFF)</option>
+      <option value="mirror">Mirror data</option>
+    </select>
+    <button id="btnSplit" class="ctl" style="left:268px;top:192px;width:92px;height:23px" disabled>Split ROM</button>
+    <select id="cmbSplit" class="ctl" style="left:366px;top:192px;width:168px;height:21px" disabled></select>
+
+    <!-- ROM INFORMATION -->
+    <div class="group ctl" style="left:12px;top:221px;width:346px;height:182px">
+      <span class="caption" data-modern="ROM information">ROM INFORMATION</span>
+      <label class="ctl" style="left:6px;top:25px">SMC-Header</label>
+      <span id="lblSMCHeader" class="ctl value" style="left:106px;top:25px">- Select ROM -</span>
+      <label class="ctl" style="left:6px;top:48px">Map Mode</label>
+      <span id="lblMapMode" class="ctl value" style="left:106px;top:48px">- Select ROM -</span>
+      <label class="ctl" style="left:6px;top:70px">ROM Type</label>
+      <span id="lblROMType" class="ctl value" style="left:106px;top:70px;max-width:236px">- Select ROM -</span>
+      <label class="ctl" style="left:6px;top:92px">ROM Size</label>
+      <span id="lblROMSize" class="ctl value" style="left:106px;top:92px">- Select ROM -</span>
+      <label class="ctl" style="left:6px;top:114px">File Size</label>
+      <span id="lblFileSize" class="ctl value" style="left:106px;top:114px">- Select ROM -</span>
+      <label class="ctl" style="left:6px;top:136px">ROM Speed</label>
+      <span id="lblROMSpeed" class="ctl value" style="left:106px;top:136px">- Select ROM -</span>
+      <label id="lblRAMLabel" class="ctl" style="left:6px;top:159px">(S)RAM</label>
+      <span id="lblRAM" class="ctl value" style="left:106px;top:159px">- Select ROM -</span>
+      <select id="cmbSRAM" class="ctl" style="left:106px;top:156px;width:140px;height:20px" hidden></select>
+    </div>
+
+    <!-- OPTIONS -->
+    <div class="group ctl" style="left:367px;top:221px;width:165px;height:46px">
+      <span class="caption" data-modern="Options">OPTIONS</span>
+      <label class="ctl check" style="left:6px;top:22px"><input type="checkbox" id="chkScan" disabled> Scan ROM on loading</label>
+    </div>
+
+    <!-- Tools -->
+    <button id="btnPatch" class="ctl icon-btn patch" style="left:363px;top:272px;width:169px;height:32px" disabled><img src="img/patch.png" alt=""><span>Apply Patch</span></button>
+    <button id="btnSwapBin" class="ctl" style="left:363px;top:312px;width:169px;height:23px" disabled>SwapBin ROM (27C801)</button>
+    <button id="btnDeinterleave" class="ctl" style="left:363px;top:345px;width:80px;height:23px" disabled>Deinterleave</button>
+    <button id="btnInterleave" class="ctl" style="left:451px;top:345px;width:80px;height:23px" disabled>Interleave</button>
+    <button id="btnRemoveRegion" class="ctl" style="left:363px;top:378px;width:145px;height:23px" disabled>Remove Region Locks</button>
+    <button id="btnRemoveSRAM" class="ctl" style="left:363px;top:411px;width:145px;height:23px" disabled>Remove SRAM Checks</button>
+    <button id="btnRemoveSlowROM" class="ctl" style="left:363px;top:444px;width:145px;height:23px" disabled>Remove SlowROM Checks</button>
+    <button id="btnScan" class="ctl vertical" style="left:515px;top:378px;width:17px;height:89px" disabled>Scan</button>
+    <button id="btnConvertMapMode" class="ctl" style="left:363px;top:477px;width:169px;height:23px" disabled>LoROM &lt;-&gt; HiROM</button>
+    <button id="btnRemoveOverdump" class="ctl" style="left:363px;top:510px;width:169px;height:23px" disabled>Remove Overdump</button>
+    <button id="btnHeatmap" class="ctl" style="left:363px;top:539px;width:169px;height:23px" disabled>ROM Heatmap</button>
+
+    <!-- CHECKSUMS -->
+    <div class="group ctl" style="left:12px;top:409px;width:346px;height:153px">
+      <span class="caption" data-modern="Checksums"><span class="caption-text">CHECKSUMS</span><span id="ledChecksum" class="led" hidden></span></span>
+      <label class="ctl" style="left:6px;top:25px">Internal</label>
+      <span id="lblChecksum" class="ctl value copy" style="left:69px;top:25px">- Select ROM -</span>
+      <label class="ctl" style="left:160px;top:25px">Internal inverse</label>
+      <span id="lblInvChecksum" class="ctl value copy" style="left:260px;top:25px">- Select ROM -</span>
+      <label class="ctl" style="left:6px;top:47px">Calculated</label>
+      <span id="lblCalcChecksum" class="ctl value copy" style="left:69px;top:47px">- Select ROM -</span>
+      <label class="ctl" style="left:160px;top:47px">Calculated inverse</label>
+      <span id="lblCalcInvChecksum" class="ctl value copy" style="left:260px;top:47px">- Select ROM -</span>
+      <label class="ctl" style="left:6px;top:69px">CRC32</label>
+      <span id="lblCRC32" class="ctl value copy" style="left:69px;top:69px">- Select ROM -</span>
+      <label class="ctl" style="left:6px;top:91px">MD5</label>
+      <span id="lblMD5" class="ctl value copy hash" style="left:69px;top:91px">- Select ROM -</span>
+      <label class="ctl" style="left:6px;top:113px">SHA-1</label>
+      <span id="lblSHA1" class="ctl value copy hash" style="left:69px;top:113px">- Select ROM -</span>
+      <label class="ctl" style="left:6px;top:135px">SHA-256</label>
+      <span id="lblSHA256" class="ctl value copy hash" style="left:69px;top:135px">- Select ROM -</span>
+    </div>
+  </div>
+
+  <div id="tooltip" hidden></div>
+  <div id="dropOverlay" hidden>Drop ROM file to load it</div>
+
+  <script src="js/platform.js"></script>
+  <script src="js/core.bundle.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/app.js"></script>
+  <script src="renderer.js"></script>
+</body>
+</html>

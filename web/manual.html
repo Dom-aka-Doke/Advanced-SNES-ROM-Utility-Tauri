@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'">
+  <title>Manual</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dialog.css">
+</head>
+<body class="manual">
+<div id="content">
+<h1>
+    <a name="top"></a><span style="font-family:Arial,Helvetica,sans-serif">Table of Contents</span>
+</h1>
+
+<ol>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#info">Edit ROM Information</a></span></span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#addheader">Add Header</a></span></span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#removeheader">Remove Header</a></span></span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#fixchecksum">Fix Checksum</a></span></span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#fixsize">Fix Internal ROM size</a></span></span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#expand">Expand ROM</a></span></span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#split">Split ROM</a></span></span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#swapbin">SwapBin ROM</a></span></span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#deinterleave">Deinterleave</a></span></span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#interleave">Interleave</a></span></span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#regionlock">Remove Region Locks</a></span></span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#sramcheck">Remove SRAM Checks</a></span></span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#slowcheck">Remove Slow ROM Checks</a></span></span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#convert-hi-lo">Convert HiROM &harr; LoROM</a></span></span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#patch">Apply Patch</a></span></span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#options">Options</a></span></span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#commandline">Commandline (CLI)</a></span></span></li>
+</ol>
+
+<p>&nbsp;</p>
+
+<h1><a name="info" /><span style="font-family:Arial,Helvetica,sans-serif">Edit ROM Information</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">Change basic ROM information like title, country/region, version and game code.</span></p>
+<a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
+
+<h1><a name="addheader" /><span style="font-family:Arial,Helvetica,sans-serif">Add Header</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">Adds an empty header.</span></p>
+<a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
+
+<h1><a name="removeheader" /><span style="font-family:Arial,Helvetica,sans-serif">Remove Header</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">Removes an existing header.</span></p>
+<a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
+
+<h1><a name="fixchecksum" /><span style="font-family:Arial,Helvetica,sans-serif">Fix Checksum</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">Fixes a broken checksum. You always should do this before saving, if possible. Please note that some beta or demo ROMs have an odd checksum anyway...</span></p>
+<a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
+
+<h1><a name="fixsize" /><span style="font-family:Arial,Helvetica,sans-serif">Fix Internal ROM size</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">Fixes wrong internal ROM size information. Do this after expanding a ROM. Also useful to fix some ROM hacks.</span></p>
+<a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
+
+<h1><a name="expand" /><span style="font-family:Arial,Helvetica,sans-serif">Expand ROM</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">Expands ROM to a specific size up to 64 Mbit (BS-X up to 32 Mbit). How the new space is filled can be chosen in the options (Expand fill). Always check if your ROM still works after doing this!</span></p>
+<a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
+
+<h1><a name="split" /><span style="font-family:Arial,Helvetica,sans-serif">Split ROM</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">Splits ROM into equal sized multiple parts.</span></p>
+<a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
+
+<h1><a name="swapbin" /><span style="font-family:Arial,Helvetica,sans-serif">SwapBin ROM</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">Swaps binaries to get a &quot;Close-to-SNES-Mask-ROM&quot;-layout.</span></p>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">Use 27C801 EPROM(s) and rewire pins as followed:</span></p>
+
+<table align="left" border="0" cellpadding="1" cellspacing="1" style="height:103px; width:300px">
+    <tbody>
+        <tr>
+            <td style="text-align:center"><span style="font-family:Arial,Helvetica,sans-serif"><strong>27C801 -&gt; Nintendo Mask ROM</strong></span></td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><span style="font-family:Arial,Helvetica,sans-serif">24&nbsp;&nbsp;&nbsp;&nbsp; -&gt;&nbsp;&nbsp;&nbsp;&nbsp; 31</span></td>
+        </tr>
+        <tr>
+            <td style="text-align:center"><span style="font-family:Arial,Helvetica,sans-serif">31&nbsp;&nbsp;&nbsp;&nbsp; -&gt;&nbsp;&nbsp;&nbsp;&nbsp; 24</span></td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    <br />
+    <br />
+    &nbsp;
+</p>
+
+<p>&nbsp;</p>
+<a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
+
+<h1><a name="deinterleave" /><span style="font-family:Arial,Helvetica,sans-serif">Deinterleave</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">Some copy stations like &quot;Game Doctor SF&quot; or &quot;Super UFO&quot; use interleaving when dumping HiROM games. This function will reverse this process. Please use ROMs with copy station header, unless you know which copy station was used!</span></p>
+<a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
+
+<h1><a name="interleave" /><span style="font-family:Arial,Helvetica,sans-serif">Interleave</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">Some patches or copy stations require interleaved ROMs. This function will interleave your ROM. If you have interleaved a ROM, patched it and want to play it in an emulator or flashcard, don't forget to deinterleave and fix checksum again!</span></p>
+<p><span style="font-family:Arial,Helvetica,sans-serif">Note: Only HiROMs can be interleaved!</span></p>
+<a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
+
+<h1><a name="regionlock" /><span style="font-family:Arial,Helvetica,sans-serif">Remove Region Locks</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">Some games have a copy protection preventing the ROM from running on systems with another region (PAL/NTSC lock). Use this function to remove most known region locks.</span></p>
+<a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
+
+<h1><a name="sramcheck" /><span style="font-family:Arial,Helvetica,sans-serif">Remove SRAM Checks</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">Some games have a copy protection preventing the ROM from running, when cartridges have more SRAM than needed (copy stations/some cheap flashcards/deprecated emulators). Use this function to remove most known SRAM checks.</span></p>
+<a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
+
+<h1><a name="slowcheck" /><span style="font-family:Arial,Helvetica,sans-serif">Remove Slow ROM Checks</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">Useful if you want to play your FastROMs on a copy station without FastROM support or burn them on (E)EPROMs slower than 120ns.</span></p>
+<a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
+
+<h1><a name="convert-hi-lo" /><span style="font-family:Arial,Helvetica,sans-serif">Convert HiROM &harr; LoROM</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">Can switch ROM layout between HiROM and LoROM. If the ROM uses (S)RAM or some enhancement chips, you have to do some manual work after conversion.</span></p>
+<p><span style="font-family:Arial,Helvetica,sans-serif">Note: Converting from HiROM to LoROM only works, if the ROM was designed to be convertible.</span></p>
+<a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
+
+<h1><a name="patch" /><span style="font-family:Arial,Helvetica,sans-serif">Apply Patch</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">Patch your loaded ROM!</span></p>
+
+<ul>
+    <li>
+        <span style="font-family:Arial,Helvetica,sans-serif">IPS</span>
+
+        <ul>
+            <li><span style="font-family:Arial,Helvetica,sans-serif">RLE hunks</span></li>
+            <li><span style="font-family:Arial,Helvetica,sans-serif">truncating</span></li>
+            <li><span style="font-family:Arial,Helvetica,sans-serif">avoids EOF offset bug</span></li>
+        </ul>
+    </li>
+    <li>
+        <span style="font-family:Arial,Helvetica,sans-serif">UPS</span>
+        <ul>
+            <li><span style="font-family:Arial,Helvetica,sans-serif">revert a patch, if applied a second time</span></li>
+        </ul>
+    </li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif">BPS</span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif">BDF</span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif">XDELTA</span></li>
+</ul>
+<a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
+
+<h1><a name="options" /><span style="font-family:Arial,Helvetica,sans-serif">Options</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif"><strong>Expand fill</strong></span></p>
+
+<ul>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><strong>Empty (0x00):</strong> New space is filled with 0x00. Free space for ROM hacks (most tools look for 0x00 to find free space).</span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><strong>Empty (0xFF):</strong> New space is filled with 0xFF, the erased state of EPROMs and flash memory.</span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><strong>Mirror data:</strong> New space is filled exactly like the SNES mirrors the ROM, f.e. to write an 8 Mbit game onto a 16 Mbit EPROM.</span></li>
+</ul>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">When expanding to 48 or 64 Mbit (ExLoROM/ExHiROM), the parts the CPU reaches via banks $00-$3F are always copied, so the game keeps running. Games with enhancement chips that use their own mapping (SA-1, S-DD1, SPC7110, Super FX) can be expanded to 48/64 Mbit as well, but only free space is added: data and header stay untouched. Use "Fix Internal ROM Size" and "Fix Checksum" afterwards.</span></p>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif"><strong>Scan protections on loading</strong></span></p>
+
+<ul>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><strong>Checked:</strong> ROM will be scanned instantly for copy protections on loading. This might take a few seconds.</span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><strong>Unchecked:</strong> You have to manually click the Scan button to check for copy protections.</span></li>
+</ul>
+<a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
+
+<h1><a name="commandline" /><span style="font-family:Arial,Helvetica,sans-serif">Commandline (CLI)</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">Use the commandline (Windows: CMD/PowerShell, macOS/Linux: Terminal) for executing batch operations (or just for processing a single file, if you prefer using the commandline).</span></p>
+<p><span style="font-family:Arial,Helvetica,sans-serif">How to start the commandline version:</span></p>
+<ul>
+<li><span style="font-family:Arial,Helvetica,sans-serif">This version runs the command line with <strong>Node.js</strong> from the source folder: <span class="mono">node cli.js [options]</span> or <span class="mono">npm run cli -- [options]</span></span></li>
+</ul>
+<p><span style="font-family:Arial,Helvetica,sans-serif">Build your own command chain to execute operations in the order you specified!</span></p>
+<p><span style="font-family:Arial,Helvetica,sans-serif">Notes:</span></p>
+<li><p><span style="font-family:Arial,Helvetica,sans-serif">Deinterleaving and interleaving might require user action! You will be asked in the terminal (or by a dialog, if the application executable is used directly) which copier format should be used</span></p></li>
+<li><p><span style="font-family:Arial,Helvetica,sans-serif">All paths must be in absolute format</span></p></li>
+<p><span style="font-family:Arial,Helvetica,sans-serif"><u>Example:</u></span></p>
+<p><span style="font-family:Consolas">Advanced_SNES_ROM_Utility -path "C:\ROMs" -recursive -header add -patch "C:\Patches\patch.ips" -header remove -fixromsize -fixchecksum</span></p>
+<p><span style="font-family:Arial,Helvetica,sans-serif">This command will add a header to all ROMs in C:\ROMs (subfolders included), apply an IPS patch, remove header afterwards, fix internal ROM size and checksum and save the modfied file with an extension.</span></p>
+<table border="0" style="font-family: Consolas">
+    <tbody>
+        <tr style="vertical-align:top">
+            <td width="5%">Usage:</td>
+            <td width="40%">&nbsp;</td>
+            <td width="55%">&nbsp;</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td colspan="3">Advanced_SNES_ROM_Utility [options]</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td colspan="3">&nbsp;</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td colspan="3"><span style="margin-left: 20px;">Options:</span></td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td width="5%">&nbsp;</td>
+            <td width="40%">-path &lt;FILEPATH, FOLDER&gt;</td>
+            <td width="55%">Path or folder of the ROM file(s)</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td width="5%">&nbsp;</td>
+            <td width="40%">-recursive</td>
+            <td width="55%">Include files from subdirectories</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td width="5%">&nbsp;</td>
+            <td width="40%">-overwrite</td>
+            <td width="55%">Overwrite files on saving (else an extension will be used)</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td width="5%">&nbsp;</td>
+            <td width="40%">-header &lt;add, remove&gt;</td>
+            <td width="55%">Adds or removes a header</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td width="5%">&nbsp;</td>
+            <td width="40%">-fixchecksum</td>
+            <td width="55%">Fixes a broken checksum</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td width="5%">&nbsp;</td>
+            <td width="40%">-fixromsize</td>
+            <td width="55%">Fixes a wrong internal ROM size</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td width="5%">&nbsp;</td>
+            <td width="40%">-removeregion</td>
+            <td width="55%">Removes existing region checks</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td width="5%">&nbsp;</td>
+            <td width="40%">-removesram</td>
+            <td width="55%">Removes existing SRAM checks</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td width="5%">&nbsp;</td>
+            <td width="40%">-removeslowrom</td>
+            <td width="55%">Removes existing SlowROM checks</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td width="5%">&nbsp;</td>
+            <td width="40%">-deinterleave</td>
+            <td width="55%">Deinterleave, if ROM is in interleaved format</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td width="5%">&nbsp;</td>
+            <td width="40%">-interleave</td>
+            <td width="55%">Interleave, if ROM is in deinterleaved format</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td width="5%">&nbsp;</td>
+            <td width="40%">-patch &lt;FILEPATH&gt;</td>
+            <td width="55%">Patch ROM with a specific patch</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td width="5%">&nbsp;</td>
+            <td width="40%">-removeoverdump</td>
+            <td width="55%">Removes mirrored or padded data of an overdumped ROM</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td width="5%">&nbsp;</td>
+            <td width="40%">-company &lt;CODE&gt;</td>
+            <td width="55%">Sets the company by its 2 character code (f.e. 01 = Nintendo, A4 = Konami). ROMs with old header can only store codes 00-FF (except 33)</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td width="5%">&nbsp;</td>
+            <td width="40%">-sram &lt;0-7&gt;</td>
+            <td width="55%">Sets the (S)RAM size: 0 = none, n = 2^n kByte (1 = 2 kByte ... 7 = 128 kByte). Not possible for BS-X ROMs and Super FX games without extended header (f.e. Star Fox / Star Wing)</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td width="5%">&nbsp;</td>
+            <td width="40%">-log</td>
+            <td width="55%">Write output to a logfile</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td width="5%">&nbsp;</td>
+            <td width="40%">-version</td>
+            <td width="55%">Show version information</td>
+        </tr>
+        <tr style="vertical-align:top">
+            <td width="5%">&nbsp;</td>
+            <td width="40%">-help</td>
+            <td width="55%">Show help and usage information</td>
+        </tr>
+    </tbody>
+</table>
+<a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
+</div>
+<button id="btnClose">Close</button>
+<script src="js/platform.js"></script>
+<script src="js/bridge-child.js"></script>
+<script src="dialog.js"></script>
+</body>
+</html>
