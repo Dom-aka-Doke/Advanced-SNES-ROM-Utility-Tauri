@@ -22,8 +22,10 @@ html,
 body {
   margin: 0;
   padding: 0;
-  width: 542px;
-  height: 571px;
+  width: 100%;
+  min-width: 542px;
+  height: 100%;
+  min-height: 571px;
   overflow: hidden;
   background: var(--bg);
   color: var(--text);

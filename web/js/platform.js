@@ -53,10 +53,20 @@ window.Platform = (function platform() {
      */
     async fitContent(width, height) {
       const win = T.window.getCurrentWindow();
-      const missingW = width - window.innerWidth;
-      const missingH = height - window.innerHeight;
-      if (window.innerHeight > 0 && (missingW > 0 || missingH > 0)) {
-        await win.setSize(new T.dpi.LogicalSize(width + Math.max(0, missingW), height + Math.max(0, missingH)));
+      const frame = () => new Promise((resolve) => requestAnimationFrame(() => resolve()));
+
+      // Correct the window by the difference between wanted and real content size;
+      // repeated, because the menu bar may only be counted after the first resize
+      for (let attempt = 0; attempt < 3; attempt++) {
+        await frame();
+        const diffW = width - window.innerWidth;
+        const diffH = height - window.innerHeight;
+        if (window.innerHeight <= 0 || (Math.abs(diffW) < 1 && Math.abs(diffH) < 1)) return;
+
+        const scale = await win.scaleFactor();
+        const inner = (await win.innerSize()).toLogical(scale);
+        await win.setSize(new T.dpi.LogicalSize(inner.width + diffW, inner.height + diffH));
+        await new Promise((resolve) => setTimeout(resolve, 50));
       }
     },
     setDesignMenu: (modern) => invoke('set_design_menu', { modern }),
