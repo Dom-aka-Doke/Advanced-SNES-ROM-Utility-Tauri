@@ -3,8 +3,7 @@
 An easy to use utility for performing some tasks on SNES / SFC ROMs – now for **Windows, macOS and Linux**!
 
 This is a port of the C# / Windows Forms application
-[Advanced SNES ROM Utility](https://github.com/Dom-aka-Doke/Advanced-SNES-ROM-Utility) (based on the `dev`
-branch, version 1.2). The goal of the port is to bring the tool to more operating systems while keeping
+[Advanced SNES ROM Utility](https://github.com/Dom-aka-Doke/Advanced-SNES-ROM-Utility) (based on version 1.3). The goal of the port is to bring the tool to more operating systems while keeping
 its look and behaviour. Along the way it got a couple of new features, fixes and a modern design.
 
 It is built with [Tauri](https://tauri.app): the ROM logic runs as JavaScript, the window uses the web view
@@ -15,37 +14,14 @@ single Windows executable, compared to over 100 MB for a typical Electron app.
 
 ## Contents
 
-- [What's new compared to the C# version](#whats-new-compared-to-the-c-version)
 - [Functions](#functions)
 - [Options](#options)
 - [Commandline (CLI)](#commandline-cli)
 - [Some notes about BS-X ROMs](#some-notes-about-bs-x-roms)
-- [Changed functions](#changed-functions)
 - [Download and installation](#download-and-installation)
 - [Building from source](#building-from-source)
 - [Project structure](#project-structure)
 - [License](#license)
-
----
-
-## What's new compared to the C# version
-
-| | |
-|---|---|
-| **Platforms** | Windows 10/11, macOS (Intel and Apple Silicon) and Linux |
-| **Modern design** | New look, switchable to the classic design at any time (*View* menu, <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>D</kbd>) |
-| **Company** | Can be changed; codes are converted between the old and the extended header format |
-| **(S)RAM size** | Can be changed (locked where the header has no field for it, e.g. Star Fox / Star Wing) |
-| **Expand fill** | Choose how new space is filled: `0x00`, `0xFF` or mirrored data |
-| **Expand to 48 / 64 Mbit** | Converts the map mode to ExLoROM / ExHiROM and keeps all banks reachable |
-| **Mirroring** | Follows the address decoding of the real SNES |
-| **Remove Overdump** | Detects and removes mirrored or padded data of overdumped ROMs |
-| **ROM Heatmap** | Shows identical, empty and unique ROM banks |
-| **Small ROMs** | Homebrew and test ROMs from 32 kByte on can be loaded (was 128 kByte) |
-| **Checksum light** | Shows at a glance whether the internal checksum is correct |
-| **Convenience** | Drag & drop, remembers the last used folder, asks before closing with unsaved changes |
-| **CLI** | New options `-company`, `-sram`, `-removeoverdump`; the copier format is asked in the terminal on every OS |
-| **Fixes** | Shift-JIS titles, BPS metadata, UPS reverting, game code validation and more – see [Changed functions](#changed-functions) |
 
 ---
 
@@ -291,23 +267,6 @@ For more information type `node cli.js -help` or take a look into the tool's man
 - Checksum doesn't include header information (it won't change if you edit values)
 - There's no region code (JP only)
 - ROM size is limited to a maximum of 32 Mbit
-
----
-
-## Changed functions
-
-Compared to the C# version 1.2:
-
-- **Title:** limited by bytes instead of characters; Shift-JIS double byte characters are never cut in half.
-- **Game code:** only `A-Z` and `0-9` are accepted.
-- **Expand:** the *Mirror ROM on expanding* checkbox became the **Expand fill** selection with three choices;
-  mirroring now follows the SNES address decoding; 48 / 64 Mbit keep the game working (ExLoROM / ExHiROM).
-- **Minimum ROM size:** 32 kByte instead of 128 kByte.
-- **Fix Internal ROM Size:** also supports 256 Kbit and 512 Kbit ROMs.
-- **BPS:** patches with exactly 128 bytes of metadata are applied correctly.
-- **UPS:** reverting a patch is verified against the checksum of the original.
-- **Interleave / Deinterleave in the CLI:** the copier question is asked in the terminal instead of a Windows
-  form, so it works on every operating system.
 
 ---
 
