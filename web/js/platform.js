@@ -7,6 +7,20 @@ window.Platform = (function platform() {
   const T = window.__TAURI__;
   const invoke = (cmd, args, options) => T.core.invoke(cmd, args, options);
 
+  /**
+   * Raw request body: 4 bytes length (little endian) + JSON parameters + data.
+   * Parameters travel in the body because the IPC protocol rejects own header fields.
+   */
+  function framed(params, data) {
+    const json = new TextEncoder().encode(JSON.stringify(params));
+    const bytes = data instanceof Uint8Array ? data : new Uint8Array(data);
+    const body = new Uint8Array(4 + json.length + bytes.length);
+    new DataView(body.buffer).setUint32(0, json.length, true);
+    body.set(json, 4);
+    body.set(bytes, 4 + json.length);
+    return body;
+  }
+
   return {
     /* ---------------------------- files ---------------------------- */
 
@@ -20,9 +34,15 @@ window.Platform = (function platform() {
     },
 
     /** Writes bytes (raw request body, no JSON conversion) */
-    writeFile: (path, data) => invoke('write_file', data, { headers: { 'x-path': encodeURIComponent(path) } }),
+    writeFile: (path, data) => invoke('write_file', framed({ path }, data)),
 
     startupFile: () => invoke('startup_file'),
+
+    /** Writes the ROM to a temporary copy and starts the emulator with it */
+    runEmulator: (emulator, args, name, data) => invoke('run_emulator', framed({ emulator, args, name }, data)),
+
+    /** "windows", "macos" or "linux" */
+    os: /Windows/i.test(navigator.userAgent) ? 'windows' : /Mac/i.test(navigator.userAgent) ? 'macos' : 'linux',
     defaultFolder: () => invoke('default_folder'),
 
     /* --------------------------- settings -------------------------- */
@@ -69,7 +89,8 @@ window.Platform = (function platform() {
         await new Promise((resolve) => setTimeout(resolve, 50));
       }
     },
-    setDesignMenu: (modern) => invoke('set_design_menu', { modern }),
+    /** Check marks / enabled state of the menu (design, scan, run in emulator) */
+    setMenuState: ({ modern, scan, romLoaded }) => invoke('set_menu_state', { modern, scan, romLoaded }),
     currentWindow: () => T.window.getCurrentWindow(),
     currentWebview: () => T.webview.getCurrentWebview(),
 

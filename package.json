@@ -1,6 +1,6 @@
 {
   "name": "advanced-snes-rom-utility-tauri",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "description": "Advanced SNES ROM Utility JS - lightweight Tauri version for Windows, macOS and Linux",
   "license": "GPL-3.0-or-later",

@@ -213,17 +213,31 @@ Scan / rescan ROM for copy protections.
 - Supported file extensions: `.sfc`, `.smc`, `.swc`, `.fig` (any other file can be opened as well).
 - When closing the window with unsaved changes, the tool asks whether to save them.
 
+### Run in Emulator
+Starts the current state of the ROM – including unsaved changes – in your emulator with <kbd>F5</kbd>
+(*File → Run in Emulator*). Choose the emulator once with *Options → Set Emulator…*; without one, <kbd>F5</kbd>
+asks you to choose it.
+- **Windows:** the program file, e.g. `snes9x-x64.exe` or `Mesen.exe`. **macOS:** the app, e.g. `Snes9x.app`
+  or `OpenEmu.app`. **Linux:** the program, e.g. `/usr/bin/snes9x-gtk`.
+- **Arguments:** `%ROM%` is replaced by the path of the ROM. The default `"%ROM%"` works for most emulators;
+  RetroArch needs the core, e.g. `-L cores/snes9x_libretro.dll "%ROM%"`.
+- A temporary copy with the same file name is started – your original file stays untouched. The copies are
+  deleted when the tool closes; save files (`.srm`) of the emulator are kept between test runs.
+
 ---
 
 ## Options
+
+The *Options* menu contains **Reset Options**, **Scan ROM on loading** and **Set Emulator…**.
 
 - **Expand fill** – how new space is filled when expanding a ROM (see [Expand ROM](#expand-rom)).
 - **Scan ROM on loading**
   - Checked – the ROM is scanned for copy protections instantly on loading. This might take a few seconds.
   - Unchecked – you have to click the **Scan** button to check for copy protections.
 - **Design** (*View* menu) – modern or classic look; <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>D</kbd> toggles.
-- **Reset Options** (*Help* menu) – restores all settings and all dialog messages you have hidden with
-  *"Don't show this message again"*.
+- **Set Emulator…** (*Options* menu) – emulator for [Run in Emulator](#run-in-emulator).
+- **Reset Options** (*Options* menu) – restores all settings (incl. the emulator) and all dialog messages you
+  have hidden with *"Don't show this message again"*.
 
 All settings are saved automatically. Settings of a previous Electron version are taken over on the first start.
 

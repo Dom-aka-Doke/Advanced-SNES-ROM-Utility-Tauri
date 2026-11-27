@@ -44,7 +44,10 @@
     ConvertMapModeMessage: false,
     ModernUI: true,
     LastROMFolder: '',
+    EmulatorPath: '',
+    EmulatorArguments: '"%ROM%"',
   });
+  const DEFAULT_EMULATOR_ARGS = DEFAULTS.EmulatorArguments;
 
   const settings = {
     values: { ...DEFAULTS },
@@ -298,6 +301,17 @@
   function pushState() {
     if (listeners.state) listeners.state(buildState());
     notifyHeatmap();
+    syncMenu();
+  }
+
+  /** Check marks and enabled state of the menu */
+  let menuKey = null;
+  function syncMenu() {
+    const state = { modern: !!settings.get('ModernUI'), scan: !!settings.get('ScanROMSetting'), romLoaded: !!rom };
+    const key = JSON.stringify(state);
+    if (key === menuKey) return;
+    menuKey = key;
+    P.setMenuState(state).catch(() => { menuKey = null; });
   }
 
   function notifyHeatmap() {
@@ -610,6 +624,7 @@
     try {
       await actions[name](payload);
       if (name !== 'getState') notifyHeatmap();
+      syncMenu();
     } catch (err) {
       vfs.takeWrites();
       await message(`An unexpected error occurred!\n\n${err && err.stack ? err.stack : err}`, { type: 'error' });
@@ -651,7 +666,6 @@
 
   async function setDesign(modern) {
     settings.set('ModernUI', !!modern);
-    P.setDesignMenu(!!modern).catch(() => {});
     pushState();
     P.emit('design', !!modern).catch(() => {});
   }
@@ -660,7 +674,7 @@
     const res = await ask({
       type: 'warning',
       title: 'Attention!',
-      message: 'This will reset all your saved settings and\nrestore all your suppressed dialog messages.\n\nDo you want to proceed?',
+      message: 'This will reset all your saved settings (incl. the emulator) and\nrestore all your suppressed dialog messages.\n\nDo you want to proceed?',
       buttons: ['Yes', 'No'],
       defaultId: 1,
       cancelId: 1,
@@ -672,9 +686,86 @@
     settings.set('ScanROMSetting', false);
     settings.set('SlowROMFixMessage', false);
     settings.set('ConvertMapModeMessage', false);
+    settings.set('EmulatorPath', '');
+    settings.set('EmulatorArguments', DEFAULT_EMULATOR_ARGS);
     pushState();
 
     await message('All settings have been reset successfully!', { title: 'Success!' });
+  }
+
+  /* ------------------------------ emulator ------------------------ */
+
+  const EMULATOR_FILTERS = {
+    windows: [{ name: 'Programs (*.exe)', extensions: ['exe'] }, { name: 'All Files (*.*)', extensions: ['*'] }],
+    macos: [{ name: 'Applications (*.app)', extensions: ['app'] }],
+    linux: [],
+  };
+
+  /** "Set Emulator..." dialog. Returns true if an emulator is set afterwards. */
+  async function setEmulator() {
+    const res = await window.Modal.emulator({
+      path: settings.get('EmulatorPath'),
+      args: settings.get('EmulatorArguments'),
+      defaultArgs: DEFAULT_EMULATOR_ARGS,
+      browse: async (current) => {
+        let defaultPath;
+        try {
+          if (current && (await P.fileInfo(current)).exists) defaultPath = path.dirname(current);
+        } catch {
+          // invalid path in the text field
+        }
+        const filters = EMULATOR_FILTERS[P.os];
+        return P.openDialog({ defaultPath, filters: filters.length ? filters : undefined });
+      },
+      validate: async (file) => {
+        if (!file) return null;
+        const info = await P.fileInfo(file).catch(() => ({ exists: false }));
+        return info.exists ? null : `The emulator could not be found:\n${file}`;
+      },
+    });
+
+    if (res.ok) {
+      settings.set('EmulatorPath', res.path);
+      settings.set('EmulatorArguments', res.args);
+    }
+    return !!settings.get('EmulatorPath');
+  }
+
+  /** Starts the current state of the ROM (incl. unsaved changes) in the emulator */
+  let lastEmulatorStart = 0;
+  async function runInEmulator() {
+    if (!rom) return;
+
+    // Menu accelerator and key handler may both report F5
+    const now = Date.now();
+    if (now - lastEmulatorStart < 1000) return;
+    lastEmulatorStart = now;
+
+    if (!settings.get('EmulatorPath')) {
+      const res = await ask({
+        type: 'question',
+        title: 'Run in Emulator',
+        message: 'No emulator has been set yet.\n\nDo you want to choose one now?',
+        buttons: ['Yes', 'No'],
+        defaultId: 0,
+        cancelId: 1,
+      });
+      if (res.response !== 0 || !(await setEmulator())) return;
+    }
+
+    if (listeners.flushEdits) {
+      try {
+        await listeners.flushEdits();
+      } catch {
+        // start with the last valid state
+      }
+    }
+
+    try {
+      await P.runEmulator(settings.get('EmulatorPath'), settings.get('EmulatorArguments'), path.basename(rom.ROMFullPath), rom.getSaveData());
+    } catch (err) {
+      await message(`The emulator could not be started.\n\n${err}`, { type: 'error', title: 'Run in Emulator' });
+    }
   }
 
   /** Runs an action triggered outside the renderer (menu, drag & drop) with busy cursor */
@@ -697,6 +788,13 @@
     classic: () => setDesign(false),
     'toggle-design': () => setDesign(!settings.get('ModernUI')),
     reset: () => resetOptions(),
+    scan: () => {
+      settings.set('ScanROMSetting', !settings.get('ScanROMSetting'));
+      menuKey = null;
+      pushState();
+    },
+    'set-emulator': () => setEmulator(),
+    'run-emulator': () => runInEmulator(),
     manual: () => openChildWindow('manual'),
     about: () => openChildWindow('about'),
   };
@@ -741,7 +839,15 @@
 
   async function start() {
     await settings.load();
-    P.setDesignMenu(settings.get('ModernUI')).catch(() => {});
+    syncMenu();
+
+    // F5 also works while the focus is in the page (the webview would reload otherwise)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'F5' || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r')) {
+        e.preventDefault();
+        if (e.key === 'F5' && !document.querySelector('.modal-overlay')) runInEmulator();
+      }
+    });
 
     P.listen('menu', (id) => {
       if (MENU[id]) MENU[id]();

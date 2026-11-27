@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' ipc: http://ipc.localhost; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'">
   <title>Manual</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="dialog.css">
@@ -29,6 +29,7 @@
     <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#slowcheck">Remove Slow ROM Checks</a></span></span></li>
     <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#convert-hi-lo">Convert HiROM &harr; LoROM</a></span></span></li>
     <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#patch">Apply Patch</a></span></span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#emulator">Run in Emulator</a></span></span></li>
     <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#options">Options</a></span></span></li>
     <li><span style="font-family:Arial,Helvetica,sans-serif"><span style="font-size:20px"><a href="#commandline">Commandline (CLI)</a></span></span></li>
 </ol>
@@ -157,7 +158,19 @@
 </ul>
 <a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
 
+<h1><a name="emulator" /><span style="font-family:Arial,Helvetica,sans-serif">Run in Emulator</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif">Starts the current state of the ROM - including unsaved changes - in your emulator. Press <strong>F5</strong> or choose <em>File &rarr; Run in Emulator</em>.</span></p>
+<ul>
+    <li><span style="font-family:Arial,Helvetica,sans-serif">Choose the emulator once with <em>Options &rarr; Set Emulator...</em> (Windows: f.e. snes9x-x64.exe, macOS: f.e. Snes9x.app or OpenEmu.app, Linux: f.e. /usr/bin/snes9x-gtk). If no emulator is set, F5 asks you to choose one.</span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif"><strong>Arguments:</strong> <em>%ROM%</em> is replaced by the path of the ROM. The default <em>"%ROM%"</em> works for most emulators. RetroArch needs the core, f.e. <em>-L cores/snes9x_libretro.dll "%ROM%"</em>.</span></li>
+    <li><span style="font-family:Arial,Helvetica,sans-serif">The ROM is written to a temporary copy with the same file name, your original file stays untouched. The copies are deleted when the tool is closed. Save files (.srm) of the emulator are kept, so your progress stays between test runs.</span></li>
+</ul>
+<a href="#top"><span style="font-family:Arial,Helvetica,sans-serif">go back</span></a>
+
 <h1><a name="options" /><span style="font-family:Arial,Helvetica,sans-serif">Options</span></h1>
+
+<p><span style="font-family:Arial,Helvetica,sans-serif"><em>Reset Options</em>, <em>Scan ROM on loading</em> and <em>Set Emulator...</em> can be found in the <em>Options</em> menu. <em>Reset Options</em> restores all settings (incl. the emulator) and shows hidden messages again.</span></p>
 
 <p><span style="font-family:Arial,Helvetica,sans-serif"><strong>Expand fill</strong></span></p>
 

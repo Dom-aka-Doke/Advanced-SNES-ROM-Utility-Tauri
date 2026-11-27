@@ -1,6 +1,6 @@
 [package]
 name = "advanced-snes-rom-utility"
-version = "2.0.0"
+version = "2.1.0"
 description = "Advanced SNES ROM Utility JS (Tauri)"
 authors = ["Dom aka Doke"]
 license = "GPL-3.0-or-later"

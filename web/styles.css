@@ -596,3 +596,68 @@ body.modern .modal-title {
 body.modern .modal-text {
   background: transparent;
 }
+
+/* "Set Emulator" dialog */
+.modal-form {
+  width: 440px;
+  max-width: 440px;
+}
+
+.modal-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  white-space: normal;
+}
+
+.modal-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modal-fields input {
+  position: static;
+  width: 100%;
+  height: 23px;
+  box-sizing: border-box;
+}
+
+.modal-path {
+  display: flex;
+  gap: 6px;
+}
+
+.modal-path input {
+  flex: 1;
+  min-width: 0;
+}
+
+.modal-path button {
+  position: static;
+  min-width: 75px;
+  height: 23px;
+}
+
+.modal-hint {
+  color: #6d6d6d;
+  white-space: pre-wrap;
+  font-size: 11px;
+}
+
+.modal-error {
+  color: #cf222e;
+  white-space: pre-wrap;
+}
+
+.modal-error:empty {
+  display: none;
+}
+
+.modal-buttons .modal-left {
+  margin-right: auto;
+}
+
+body.modern .modal-hint {
+  color: var(--m-ink-soft, #6d6d6d);
+}
